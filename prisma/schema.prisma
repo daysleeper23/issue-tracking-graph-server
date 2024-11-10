@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model projects {
+  id       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title    String
+  status   String?   @db.VarChar
+  priority String    @db.VarChar
+  lead     String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  team     String    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  start    DateTime? @db.Date
+  end      DateTime? @db.Date
+  users    users?    @relation(fields: [lead], references: [id])
+  teams    teams     @relation(fields: [team], references: [id], onDelete: Cascade)
+  tasks    tasks[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model tasks {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  number     Int
+  title      String
+  project    String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sprint     String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  dueDate    DateTime? @db.Timestamptz(6)
+  priority   String    @db.VarChar
+  status     String    @db.VarChar
+  estimate   Int       @default(0) @db.SmallInt
+  assignee   String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  team       String    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  updated_at DateTime  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  users      users?    @relation(fields: [assignee], references: [id])
+  projects   projects? @relation(fields: [project], references: [id])
+  teams      teams     @relation(fields: [team], references: [id], onDelete: Cascade)
+}
+
+model teams {
+  id         String     @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name       String     @db.VarChar(255)
+  created_at DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime?  @default(now()) @db.Timestamptz(6)
+  projects   projects[]
+  tasks      tasks[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model users {
+  id           String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String     @db.VarChar
+  avatarUrl    String     @db.VarChar
+  onlineStatus String     @db.VarChar
+  create_at    DateTime   @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  update_at    DateTime?  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  projects     projects[]
+  tasks        tasks[]
+}
