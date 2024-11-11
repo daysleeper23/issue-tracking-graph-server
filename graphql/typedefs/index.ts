@@ -88,7 +88,6 @@ const typeDefs = `
     getOneProject(id: String): Project
 
     getAllSprintsFromTeam(teamId: String): [Sprint!]
-    updateSprint(sprintId: String, updates: UpdateSprintInput): Sprint
   }
 
   type Mutation {
