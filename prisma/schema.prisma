@@ -30,14 +30,14 @@ model tasks {
   title      String
   project    String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   sprint     String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  dueDate    DateTime? @db.Timestamptz(6)
-  priority   String    @db.VarChar
-  status     String    @db.VarChar
+  priority   Int       @default(0) @db.SmallInt
+  status     Int       @default(0) @db.SmallInt
   estimate   Int       @default(0) @db.SmallInt
   assignee   String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   team       String    @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   created_at DateTime  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
   updated_at DateTime  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  due        BigInt?
   users      users?    @relation(fields: [assignee], references: [id])
   projects   projects? @relation(fields: [project], references: [id])
   teams      teams     @relation(fields: [team], references: [id], onDelete: Cascade)
