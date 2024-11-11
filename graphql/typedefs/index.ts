@@ -46,6 +46,14 @@ const typeDefs = `
     tasks: [Task],
   }
 
+  input UpdateSprintInput {
+    name: String
+    description: String
+    status: String
+    start: String
+    end: String
+  }
+
   type Task {
     id: ID!,
     number: Int!,
@@ -73,16 +81,20 @@ const typeDefs = `
   }
 
   type Query {
-    tasks(teamId: String): [Task!]
-    task(id: String): Task
-    projects(teamId: String): [Project!]
-    project(id: String): Project
-    sprints(teamId: String): [Sprint!]
+    getAllTasksFromTeam(teamId: String): [Task!]
+    getOneTask(id: String): Task
+
+    getAllProjectsFromTeam(teamId: String): [Project!]
+    getOneProject(id: String): Project
+
+    getAllSprintsFromTeam(teamId: String): [Sprint!]
+    updateSprint(sprintId: String, updates: UpdateSprintInput): Sprint
   }
 
   type Mutation {
     updateTask(taskId: String, updates: UpdateTaskInput): Task
     updateProject(projectId: String, updates: UpdateProjectInput): Project
+    updateSprint(sprintId: String, updates: UpdateSprintInput): Sprint
   }
 `
 

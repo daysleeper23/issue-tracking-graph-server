@@ -3,10 +3,10 @@ import { getTask, getTasksFromTeam, updateTask } from '../../services/tasks'
 
 const taskResolvers = {
   Query: {
-    tasks: async (_: any, args: { teamId: string }) => {
+    getAllTasksFromTeam: async (_: any, args: { teamId: string }) => {
       return await getTasksFromTeam(args.teamId);
     },
-    task: async (_: any, args: { id: string }) => {
+    getOneTask: async (_: any, args: { id: string }) => {
       return await getTask(args.id);
     }
   },

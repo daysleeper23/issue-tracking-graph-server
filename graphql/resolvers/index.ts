@@ -11,6 +11,7 @@ const resolvers = {
   Mutation: {
     ...taskResolvers.Mutation,
     ...projectResolvers.Mutation,
+    ...sprintResolvers.Mutation,
   },
   Task: {
     project: (parent: any) => parent.projects,
@@ -21,6 +22,9 @@ const resolvers = {
     lead: (parent: any) => parent.users,
     tasks: (parent: any) => parent.tasks,
     team: (parent: any) => parent.teams,
+  },
+  Sprint: {
+    tasks: (parent: any) => parent.tasks,
   },
 };
 export default resolvers

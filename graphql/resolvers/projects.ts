@@ -3,10 +3,10 @@ import { getProject, getProjectsFromTeam, updateProject } from "../../services/p
 
 const projectResolvers = {
   Query: {
-    projects: async (_: any, args: { teamId: string }) => {
+    getAllProjectsFromTeam: async (_: any, args: { teamId: string }) => {
       return await getProjectsFromTeam(args.teamId);
     },
-    project: async (_: any, args: { id: string }) => {
+    getOneProject: async (_: any, args: { id: string }) => {
       return await getProject(args.id);
     }
   },

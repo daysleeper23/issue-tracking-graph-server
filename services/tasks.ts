@@ -15,6 +15,12 @@ export const getTasksFromTeam = async (teamId: string) => {
             title: true
           }
         },
+        sprints: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
         users: {
           select: {
             id: true,
