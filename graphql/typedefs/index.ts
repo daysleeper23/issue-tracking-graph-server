@@ -40,15 +40,27 @@ const typeDefs = `
     sprint: String
   }
 
+  input UpdateTaskInput {
+  title: String
+  due: String
+  priority: Int
+  status: String
+  estimate: Int
+  assignee: String
+  project: String
+  sprint: String
+}
+
   type Query {
     tasks(teamId: String): [Task!]
+    task(id: String): Task
     projects(teamId: String): [Project!]
     project(id: String): Project
   }
 
   type Mutation {
-    updateTask(id: String, title: String, number: Int): Task
+    updateTask(taskId: String, updates: UpdateTaskInput): Task
   }
 `
 
-module.exports = typeDefs
+export default typeDefs;

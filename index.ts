@@ -3,10 +3,33 @@ const { startStandaloneServer } = require('@apollo/server/standalone')
 
 import { PrismaClient } from '@prisma/client'
 
-const typeDefs = require('./graphql/schema');
-const resolvers = require('./graphql/resolvers');
+import typeDefs from './graphql/typedefs';
+import resolvers from './graphql/resolvers';
 
-const prisma = new PrismaClient()
+export const prisma = new PrismaClient().$extends({
+  result: {
+    tasks: {
+      due: {
+        // After fetching, convert the `due` field to a string if it's defined
+        needs: {},
+        compute(value: any) {
+          // console.log('Due field value:', value);
+          return value.due !== null 
+            ? new Date(Number(value.due) * 1000).toLocaleDateString(
+              'en-US',
+              {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                timeZone: 'utc'
+              }
+            )
+            : 'No due date';
+        },
+      },
+    },
+  },
+});
 
 const server = new ApolloServer({
   typeDefs,
