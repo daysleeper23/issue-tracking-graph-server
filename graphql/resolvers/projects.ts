@@ -1,4 +1,5 @@
-import { getProject, getProjectsFromTeam } from "../../services/projects";
+import { projects } from "@prisma/client";
+import { getProject, getProjectsFromTeam, updateProject } from "../../services/projects";
 
 const projectResolvers = {
   Query: {
@@ -9,6 +10,11 @@ const projectResolvers = {
       return await getProject(args.id);
     }
   },
+  Mutation: {
+    updateProject: async (_: any, args: { projectId: string, updates: Partial<projects> }) => {
+      return await updateProject(args.projectId, args.updates);
+    },
+  }
 };
 
 export default projectResolvers;

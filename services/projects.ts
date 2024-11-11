@@ -1,3 +1,4 @@
+import { projects } from "@prisma/client";
 import { prisma } from "..";
 
 export const getProjectsFromTeam = async (teamId: string) => {
@@ -63,6 +64,27 @@ export const getProject = async (projectId: string) => {
     return project;
   } catch (error) {
     console.log(error)
+    await prisma.$disconnect();
+    return null;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export const updateProject = async (
+  projectId: string,
+  updates: Partial<projects>
+) => {
+  try {
+    const result = await prisma.projects.update({
+      where: {
+        id: projectId
+      },
+      data: updates
+    });
+    return result;
+  } catch (error) {
+    console.log(error);
     await prisma.$disconnect();
     return null;
   } finally {

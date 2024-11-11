@@ -21,8 +21,29 @@ const typeDefs = `
     lead: User,
     start: String,
     end: String,
-    tasks: [Task],
     team: Team
+    tasks: [Task],
+  }
+
+  input UpdateProjectInput {
+    title: String
+    priority: String
+    status: String
+    lead: String
+    start: String
+    end: String
+    project: String
+    sprint: String
+  }
+
+  type Sprint {
+    id: ID!,
+    name: String!,
+    description: String,
+    status: String!,
+    start: String!,
+    end: String!,
+    tasks: [Task],
   }
 
   type Task {
@@ -37,29 +58,31 @@ const typeDefs = `
     updated_at: String,
     project: Project,
     assignee: User,
-    sprint: String
+    sprint: Sprint,
   }
 
   input UpdateTaskInput {
-  title: String
-  due: String
-  priority: Int
-  status: String
-  estimate: Int
-  assignee: String
-  project: String
-  sprint: String
-}
+    title: String
+    due: String
+    priority: Int
+    status: String
+    estimate: Int
+    assignee: String
+    project: String
+    sprint: String
+  }
 
   type Query {
     tasks(teamId: String): [Task!]
     task(id: String): Task
     projects(teamId: String): [Project!]
     project(id: String): Project
+    sprints(teamId: String): [Sprint!]
   }
 
   type Mutation {
     updateTask(taskId: String, updates: UpdateTaskInput): Task
+    updateProject(projectId: String, updates: UpdateProjectInput): Project
   }
 `
 
