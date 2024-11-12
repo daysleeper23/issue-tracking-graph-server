@@ -1,12 +1,14 @@
 import projectResolvers from "./projects";
 import sprintResolvers from "./sprints";
 import taskResolvers from './tasks';
+import userResolvers from "./users";
 
 const resolvers = {
   Query: {
     ...taskResolvers.Query,
     ...projectResolvers.Query,
     ...sprintResolvers.Query,
+    ...userResolvers.Query,
   },
   Mutation: {
     ...taskResolvers.Mutation,
@@ -25,6 +27,11 @@ const resolvers = {
   },
   Sprint: {
     tasks: (parent: any) => parent.tasks,
+  },
+  User: {
+    projectsInCharged: (parent: any) => parent.projects,
+    tasksAssigned: (parent: any) => parent.tasks,
+    team: (parent: any) => parent.teams,
   },
 };
 export default resolvers

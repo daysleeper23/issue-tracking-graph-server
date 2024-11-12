@@ -52,6 +52,7 @@ model teams {
   projects   projects[]
   sprints    sprints[]
   tasks      tasks[]
+  users      users[]
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -62,8 +63,10 @@ model users {
   onlineStatus String     @db.VarChar
   create_at    DateTime   @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
   update_at    DateTime?  @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  team         String     @db.Uuid
   projects     projects[]
   tasks        tasks[]
+  teams        teams      @relation(fields: [team], references: [id], onDelete: SetNull)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.

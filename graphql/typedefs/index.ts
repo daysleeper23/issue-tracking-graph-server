@@ -1,7 +1,8 @@
 const typeDefs = `
   type Team {
     id: ID!,
-    name: String!
+    name: String!,
+    identifier: String!,
   }
 
   type User {
@@ -9,6 +10,9 @@ const typeDefs = `
     name: String!,
     avatarUrl: String!,
     onlineStatus: String!,
+    team: Team!,
+    projectsInCharged: [Project],
+    tasksAssigned: [Task],
     created_at: String,
     updated_at: String
   }
@@ -88,6 +92,9 @@ const typeDefs = `
     getOneProject(id: String): Project
 
     getAllSprintsFromTeam(teamId: String): [Sprint!]
+
+    getAllUsersFromTeam(teamId: String): [User!]
+    getOneUser(id: String): User
   }
 
   type Mutation {
